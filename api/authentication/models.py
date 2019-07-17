@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
-    pass
+    is_student = models.BooleanField(default=True)
 
     def __str__(self):
         return '<User {}>'.format(self.email)
