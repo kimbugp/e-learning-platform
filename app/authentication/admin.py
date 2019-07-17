@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from api.authentication.forms import UserCreation, UserUpdate
-from api.authentication.models import User
+from app.authentication.forms import UserCreation, UserUpdate
+from app.authentication.models import User
 
 from .models import User
 
