@@ -1,15 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import AbstractUser
 
 
-class User(AbstractBaseUser):
-    username = models.CharField(db_index=True, max_length=255, unique=True)
+class User(AbstractUser):
+    pass
 
-    email = models.EmailField(db_index=True, max_length=255, unique=True)
-
-    name = models.CharField(max_length=255, default='Default Name')
-
-    is_staff = models.BooleanField(default=False)
-
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email', ]
+    def __str__(self):
+        return '<User {}>'.format(self.email)
