@@ -61,3 +61,9 @@ A simple E-learning platform for delivering learning media content.
     ```
     python manage.py runserver
     ```
+
+    Running tests:
+
+    ```
+    python manage.py tes
+    ```
