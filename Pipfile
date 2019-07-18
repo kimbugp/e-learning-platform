@@ -12,7 +12,8 @@ dj-database-url = "*"
 psycopg2-binary = "*"
 autopep8 = "*"
 django-crispy-forms = "*"
-django-heroku = "==0.3.1"
+pytest-django = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.7"

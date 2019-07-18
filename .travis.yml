@@ -16,7 +16,6 @@ before_script:
 
 script:
   - pytest
-  - python manage.py test
 
 after_success:
   - coveralls
