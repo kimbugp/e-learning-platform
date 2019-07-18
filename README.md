@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/kimbugp/e-learning-platform.svg?branch=develop)](https://travis-ci.com/kimbugp/e-learning-platform)
 # e-learning-platform
 A simple E-learning platform for delivering learning media content.
 
@@ -60,4 +61,10 @@ A simple E-learning platform for delivering learning media content.
 
     ```
     python manage.py runserver
+    ```
+
+    Running tests:
+
+    ```
+    python manage.py tes
     ```

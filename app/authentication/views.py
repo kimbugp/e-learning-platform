@@ -14,4 +14,4 @@ class SignUpView(CreateView):
 
 class ResetPassword(PasswordChangeView):
     template_name = 'password_change.html'
-    success_url = reverse_lazy('user:login')
+    success_url = reverse_lazy('login')
