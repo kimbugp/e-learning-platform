@@ -4,7 +4,7 @@ from django.contrib.auth.views import reverse_lazy
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
-from .models import Course
+from ..models import Course
 
 
 class CourseOwnerMixin(LoginRequiredMixin):

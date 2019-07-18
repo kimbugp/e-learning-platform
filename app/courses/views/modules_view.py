@@ -1,9 +1,8 @@
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic.base import TemplateResponseMixin, View
 
-from .models import Course
-
-from .forms import ModuleFormSet
+from ..models import Course
+from ..forms import ModuleFormSet
 
 
 class CourseModuleView(TemplateResponseMixin, View):
