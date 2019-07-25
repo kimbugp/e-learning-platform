@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}
+Module {{ module.order|add:1 }}: {{ module.title }}
+{% endblock %}
+
+{% block content %}
+{% with course=module.course %}
+<div class="d-flex">
+    {% include 'course_nav.html' %}
+    <div>
+        <h1>{{ course.title }}</h1>
+        <div class="module">
+            <h2>{{ module.order|add:1 }}: {{ module.title }}</h2>
+            <h3>Content:</h3>
+            <div id="module-contents">
+                {% for content in module.contents.all %}
+                <div data-id="{{ content.id }}">
+                    {% with item=content.item %}
+                    <p>{{ item }}</p>
+                    <a href="#">Edit</a>
+                    <form action="{% url 'module_content_delete' module.id content.id %}" method="post">
+                        <input type="submit" value="Delete">
+                        {% csrf_token %}
+                    </form>
+                    {% endwith %}
+                </div>
+                {% empty %}
+                <p>This module has no contents yet.</p>
+                {% endfor %}
+            </div>
+            <h3>Add new content:</h3>
+            <ul class="content-types">
+                <li><a href="{% url 'module_content_create' module.id 'text' %}">
+                        Text</a></li>
+                <li><a href="{% url 'module_content_create' module.id 'image' %}">
+                        Image</a></li>
+                <li><a href="{% url 'module_content_create' module.id 'video' %}">
+                        Video</a></li>
+                <li><a href="{% url 'module_content_create' module.id 'file' %}">
+                        File</a></li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+{% endwith %}
+{% endblock %}
