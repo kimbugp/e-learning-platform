@@ -8,6 +8,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
+from app.students.forms import CourseEnrollForm
+
 from ..models import Course, Subject
 
 
@@ -26,7 +28,7 @@ class CourseOwnerMixin(LoginRequiredMixin):
 class CourseModelEditMixin(CourseOwnerMixin):
     template_name = 'course_create.html'
     success_url = reverse_lazy('courses_list')
-    fields = ['subject', 'title', 'slug', 'overview']
+    fields = ['subject', 'title', 'overview']
 
 
 class CourseCreateView(CourseModelEditMixin, PermissionRequiredMixin,
@@ -65,3 +67,9 @@ class CourseListView(TemplateResponseMixin, View):
 class CourseDetailView(DetailView):
     model = Course
     template_name = 'course/details.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['enroll_form'] = CourseEnrollForm(
+            initial={'course': self.object})
+        return context

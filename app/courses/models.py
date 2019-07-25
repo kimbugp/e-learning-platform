@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.template.defaultfilters import slugify
 
 from app.courses.fields import OrderField
 
@@ -18,6 +19,10 @@ class Subject(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
 
 class Course(models.Model):
     owner = models.ForeignKey(User,
@@ -31,11 +36,18 @@ class Course(models.Model):
     overview = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
 
+    students = models.ManyToManyField(
+        User, related_name='courses_joined', blank=True)
+
     class Meta:
         ordering = ['-created']
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.slug)
+        super().save(*args, **kwargs)
 
 
 class Module(models.Model):
@@ -45,7 +57,6 @@ class Module(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     order = OrderField(blank=True, for_fields=['course'])
-
 
     class Meta:
         ordering = ['order']

@@ -1,23 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Login{% endblock %}
+{% block title %}Sign Up{% endblock %}
 
 {% block content %}
-
-
 <link rel="stylesheet" type="text/css" href="{% static 'authentication/style.css' %}">
 <div class="container login-container login-form-1">
-    <h3>Login</h3>
-    <form method="POST">
+    <h3>Student Signup</h3>
+    <form method='post'>
         <div class="form-group">
             {% csrf_token %}
             {{ form.as_p }}
         </div>
         <div class="form-group">
-            <input type="submit" class="btnSubmit btn btn-success" value="Login" />
-        </div>
-        <div class="form-group">
-            <a href="#" class="ForgetPwd">Forget Password?</a>
+            <input type="submit" class="btnSubmit" value="Signup" />
         </div>
     </form>
 </div>

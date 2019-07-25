@@ -15,6 +15,18 @@
             {{ course.modules.count }} modules
         </p>
         {{ object.overview|linebreaks }}
+        {% if request.user.is_authenticated %}
+        <form action="{% url 'student_enroll' %}" method="post">
+            {{ enroll_form }}
+            {% csrf_token %}
+            <input type="submit" class="button" value="Enroll">
+        </form>
+        {% else %}
+        <a href="{% url 'signup' %}" class="button">
+            Register to enroll
+        </a>
+        {% endif %}
+
     </div>
 
 </div>
