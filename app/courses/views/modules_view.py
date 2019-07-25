@@ -1,11 +1,11 @@
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic.base import TemplateResponseMixin, View
 
-from ..models import Course
+from ..models import Course, Module
 from ..forms import ModuleFormSet
 
 
-class CourseModuleView(TemplateResponseMixin, View):
+class CourseModuleUpdateView(TemplateResponseMixin, View):
     template_name = 'modules.html'
     course = None
 
@@ -26,3 +26,13 @@ class CourseModuleView(TemplateResponseMixin, View):
             formset.save()
             return redirect('courses_list')
         return self.render_to_response({'course': self.course, 'formset': formset})
+
+
+class ModuleContentListView(TemplateResponseMixin, View):
+    template_name = 'content_list.html'
+
+    def get(self, request, pk, module_id):
+        module = get_object_or_404(Module,
+                                   id=module_id,
+                                   course__owner=request.user, course__id=pk)
+        return self.render_to_response({'module': module})
