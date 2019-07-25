@@ -1,10 +1,14 @@
 from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         PermissionRequiredMixin)
 from django.contrib.auth.views import reverse_lazy
+from django.db.models import Count
+from django.shortcuts import get_object_or_404
+from django.views.generic.base import TemplateResponseMixin, View
+from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.views.generic.list import ListView
 
-from ..models import Course
+from ..models import Course, Subject
 
 
 class CourseOwnerMixin(LoginRequiredMixin):
@@ -43,3 +47,21 @@ class CourseDeleteView(PermissionRequiredMixin, CourseOwnerMixin,
 
 class CoursesListView(CourseOwnerMixin, ListView):
     template_name = 'courses_list.html'
+
+
+class CourseListView(TemplateResponseMixin, View):
+    model = Course
+    template_name = 'course/list.html'
+
+    def get(self, request, subject=None):
+        subjects = Subject.objects.annotate(total_courses=Count('courses'))
+        courses = Course.objects.annotate(total_modules=Count('modules'))
+        if subject:
+            subject = get_object_or_404(Subject, slug=subject)
+            courses = courses.filter(subject=subject)
+        return self.render_to_response({'subjects': subjects, 'subject': subject, 'courses': courses})
+
+
+class CourseDetailView(DetailView):
+    model = Course
+    template_name = 'course/details.html'
