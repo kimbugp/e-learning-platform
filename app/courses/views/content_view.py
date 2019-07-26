@@ -1,9 +1,11 @@
 from django.apps import apps
 from django.forms.models import modelform_factory
 from django.shortcuts import get_object_or_404, redirect
-from django.views.generic.base import TemplateResponseMixin, View
+from django.views.generic.base import TemplateResponseMixin, TemplateView, View
 
-from ..models import Content, Module
+from app import students
+
+from ..models import Content, Course, Module
 
 
 class ContentCreateUpdateView(TemplateResponseMixin, View):
@@ -56,3 +58,12 @@ class ContentDeleteView(View):
         content.item.delete()
         content.delete()
         return redirect('module_content_list', pk=module.course.id, module_id=module_id)
+
+
+class DashBoardView(TemplateView, TemplateResponseMixin):
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        courses = Course.objects.filter(students__id=self.request.user.id)
+        context['courses'] = courses
+        return context

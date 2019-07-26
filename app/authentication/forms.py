@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from django.contrib.auth.models import Group
 from django.utils.translation import ugettext_lazy as _
 
 from app.authentication.models import User
@@ -18,6 +19,16 @@ class UserCreation(UserCreationForm):
         self.fields['username'].help_text = None
         self.fields['password2'].help_text = None
         self.fields['password2'].label = "Confirm"
+
+    def save(self, commit=True):
+        user = super().save(commit)
+        if user.is_teacher:
+            self.add_group(user, 'teacher')
+        return user
+
+    def add_group(self, user, group):
+        my_group = Group.objects.get(name=group)
+        my_group.user_set.add(user)
 
 
 class UserUpdate(UserChangeForm):

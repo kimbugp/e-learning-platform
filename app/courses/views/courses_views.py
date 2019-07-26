@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import (LoginRequiredMixin,
                                         PermissionRequiredMixin)
 from django.contrib.auth.views import reverse_lazy
 from django.db.models import Count
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
@@ -28,12 +28,24 @@ class CourseOwnerMixin(LoginRequiredMixin):
 class CourseModelEditMixin(CourseOwnerMixin):
     template_name = 'course_create.html'
     success_url = reverse_lazy('courses_list')
-    fields = ['subject', 'title', 'overview']
+    fields = ['subject', 'title', 'overview', 'image']
+
+    def model_form_upload(request):
+        if request.method == 'POST':
+            form = DocumentForm(request.POST, request.FILES)
+            if form.is_valid():
+                form.save()
+                return redirect('home')
+        else:
+            form = DocumentForm()
+        return render(request, 'core/model_form_upload.html', {
+            'form': form
+        })
 
 
 class CourseCreateView(CourseModelEditMixin, PermissionRequiredMixin,
                        CreateView):
-    permission_required = 'courses.add_course'
+    permission_required = 'courses.create_course'
 
 
 class CourseUpdateView(PermissionRequiredMixin, CourseModelEditMixin, UpdateView):
@@ -57,7 +69,8 @@ class CourseListView(TemplateResponseMixin, View):
 
     def get(self, request, subject=None):
         subjects = Subject.objects.annotate(total_courses=Count('courses'))
-        courses = Course.objects.annotate(total_modules=Count('modules'))
+        courses = Course.objects.annotate(
+            total_modules=Count('modules')).filter(total_modules__gt=0)
         if subject:
             subject = get_object_or_404(Subject, slug=subject)
             courses = courses.filter(subject=subject)
