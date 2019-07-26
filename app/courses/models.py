@@ -4,6 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.template.loader import render_to_string
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 from app.courses.fields import OrderField
 
@@ -13,6 +14,7 @@ User = get_user_model()
 class BaseModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    title = models.CharField(max_length=200)
 
     class Meta:
         abstract = True
@@ -35,7 +37,6 @@ class BaseModel(models.Model):
 class Subject(BaseModel):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True,
                             unique_for_date='created')
 
@@ -53,7 +54,6 @@ class Course(BaseModel):
     subject = models.ForeignKey(Subject,
                                 related_name='courses',
                                 on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, unique=True,
                             unique_for_date='created')
     overview = models.TextField(blank=True)
@@ -68,6 +68,19 @@ class Course(BaseModel):
 
     def __str__(self):
         return self.title
+
+class Rating(models.Model):
+    user = models.ForeignKey(
+        User, related_name='user_rating', on_delete=models.CASCADE)
+    course = models.ForeignKey(Course,
+                               related_name='ratings',
+                               on_delete=models.CASCADE)
+    value = models.IntegerField(verbose_name='Rating', validators=[
+                                MinValueValidator(0), MaxValueValidator(5)])
+
+    class Meta:
+        unique_together = ('user', 'course',)
+
 
 
 class Module(models.Model):
