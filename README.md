@@ -1,6 +1,27 @@
 [![Build Status](https://travis-ci.com/kimbugp/e-learning-platform.svg?branch=develop)](https://travis-ci.com/kimbugp/e-learning-platform)
 # e-learning-platform
+
+## Mirest platform
 A simple E-learning platform for delivering learning media content.
+The Mirest e-learning is an online platform a learning management tools for both students and instructors
+
+## Link 
+    https://mirest.herokuapp.com/ 
+
+## Structure
+    An instructor signs up and manages courses with the content on the platform under different categories
+    Students sign-up and search through the application for useful courses which they enrol onto.
+    
+## Features.
+
+- Instructor signup
+- Courses creation and management
+- Creation and management of modules
+- Management of content in modules
+- Course enrollment by students
+- View of courses by students
+- Rating of course
+
 
 ## How to setup the project 
 -   Check that python 3 is installed:
