@@ -9,7 +9,7 @@ from django.urls import reverse
 
 
 class BaseTestCase(object):
-    fixtures = ['users', 'subjects']
+    fixtures = ['all']
     current_user = 'anonymous'
     current_password = ''
 
