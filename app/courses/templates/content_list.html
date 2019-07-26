@@ -18,11 +18,13 @@ Module {{ module.order|add:1 }}: {{ module.title }}
                 <div data-id="{{ content.id }}">
                     {% with item=content.item %}
                     <p>{{ item }}</p>
+                    {% if course.owner.id == request.user.id %}
                     <a href="#">Edit</a>
                     <form action="{% url 'module_content_delete' module.id content.id %}" method="post">
                         <input type="submit" value="Delete">
                         {% csrf_token %}
                     </form>
+                    {% endif %}
                     {% endwith %}
                 </div>
                 {% empty %}
