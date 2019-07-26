@@ -12,19 +12,21 @@
             <a href="{% url 'student_course_list_subject' subject.slug %}">
                 {{ subject.title }}</a>
             <br>
+            <img src={{course.image.url}} alt="{{ course.title }}" height="100" width="400">
+
             {{ course.modules.count }} modules
         </p>
         {{ object.overview|linebreaks }}
         {% if request.user.is_authenticated%}
-            {% if not is_enrolled%}
-                <form action="{% url 'student_enroll' %}" method="post">
-                    {{ enroll_form }}
-                    {% csrf_token %}
-                    <input type="submit" class="button" value="Enroll">
-                </form>
-            {% else%}
-            <a href="{% url 'module_content_list' course.id course.modules.first.id  %}">Continue With Course</a>
-            {% endif %}
+        {% if not is_enrolled%}
+        <form action="{% url 'student_enroll' %}" method="post">
+            {{ enroll_form }}
+            {% csrf_token %}
+            <input type="submit" class="button" value="Enroll">
+        </form>
+        {% else%}
+        <a href="{% url 'module_content_list' course.id course.modules.first.id  %}">Continue With Course</a>
+        {% endif %}
         {% else %}
         <a href="{% url 'user:signup' %}" class="button">
             Register to enroll

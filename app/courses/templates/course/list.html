@@ -18,23 +18,30 @@ All courses
             All courses
             {% endif %}
         </h1>
-        {% for course in courses %}
-        {% with subject=course.subject %}
-        <h3><a href="{% url 'student_course_detail' course.slug %}">
-                {{ course.title }}</a></h3>
-        <p>
-            <a href="{% url 'student_course_list_subject' subject.slug %}">
-                {{ subject }}</a>
-            <br>
+        <div class='row'>
+            {% for course in courses %}
+            {% with subject=course.subject %}
+            <div class='col-lg-6'>
+                <h3>
+                    <a href="{% url 'student_course_detail' course.slug %}">{{ course.title }}</a>
+                </h3>
+                <img src={{course.image.url}} alt="{{ course.title }}" height="100" width="400">
+                <p>
+                    <a href="{% url 'student_course_list_subject' subject.slug %}">
+                        {{ subject }}</a>
+                    <br>
 
-            {{ course.total_modules }} modules
-            <br>
-            Instructor: {{ course.owner.get_full_name }}
-            <br>
+                    {{ course.total_modules }} modules
+                    <br>
+                    Instructor: {{ course.owner.get_full_name }}
+                    <br>
 
-        </p>
-        {% endwith %}
-        {% endfor %}
+                </p>
+            </div>
+            {% endwith %}
+            {% endfor %}
+
+        </div>
     </div>
 
 </div>

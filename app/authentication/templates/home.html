@@ -8,16 +8,20 @@
   {% include 'navbar.html' %}
   <div id="page-content-wrapper">
     <h1>Your Courses</h1>
-    <div class="container-fluid">
+    <div class="container-fluid row ">
       {% for course in courses %}
-      <div class="container-fluid">
-        <h1 class="mt-4"><a href="{% url 'student_course_detail' course.slug %}">
-            {{ course.title }}</a></h1>
+      <div class='col-lg-6'>
+        <div class="container-fluid">
+          <img src={{course.image.url}} alt="{{ course.title }}" height="100" width="400">
+          <h1 class="mt-4"><a href="{% url 'student_course_detail' course.slug %}">
+              {{ course.title }}</a></h1>
+        </div>
         <p>{{ course.overview}}</p>
-      </div>
-      <br>
+        <br>
         Instructor: {{ course.owner.get_full_name }}
-      <br>
+        <br>
+
+      </div>
       {%empty%}
       <h1 class="mt-4">{{user.username}}</h1>
       <p>You are not enrolled to any course</p>
