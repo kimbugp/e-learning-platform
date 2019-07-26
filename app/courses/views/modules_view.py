@@ -33,6 +33,5 @@ class ModuleContentListView(TemplateResponseMixin, View):
 
     def get(self, request, pk, module_id):
         module = get_object_or_404(Module,
-                                   id=module_id,
-                                   course__owner=request.user, course__id=pk)
+                                   id=module_id,course__id=pk)
         return self.render_to_response({'module': module})

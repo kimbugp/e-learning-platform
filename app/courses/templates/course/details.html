@@ -15,14 +15,16 @@
             {{ course.modules.count }} modules
         </p>
         {{ object.overview|linebreaks }}
-        {% if request.user.is_authenticated  and not object.is_enrolled %}
-        <form action="{% url 'student_enroll' %}" method="post">
-            {{ enroll_form }}
-            {% csrf_token %}
-            <input type="submit" class="button" value="Enroll">
-        </form>
-        {% elif object.is_enrolled%}
-        <a href="{% url 'module_content_list' course.id course.modules.first.id  %}">Continue With Course</a>
+        {% if request.user.is_authenticated%}
+            {% if not is_enrolled%}
+                <form action="{% url 'student_enroll' %}" method="post">
+                    {{ enroll_form }}
+                    {% csrf_token %}
+                    <input type="submit" class="button" value="Enroll">
+                </form>
+            {% else%}
+            <a href="{% url 'module_content_list' course.id course.modules.first.id  %}">Continue With Course</a>
+            {% endif %}
         {% else %}
         <a href="{% url 'user:signup' %}" class="button">
             Register to enroll

@@ -83,8 +83,11 @@ class CourseDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        is_enrolled = True if self.object.students.all().filter(
-            id=self.request.user.id) else False
+        is_enrolled = False
+        if self.object.students.all().filter(id=self.request.user.id):
+            is_enrolled = True
+
         context['enroll_form'] = CourseEnrollForm(
-            initial={'course': self.object, 'is_enrolled': is_enrolled})
+            initial={'course': self.object})
+        context['is_enrolled'] = is_enrolled
         return context
