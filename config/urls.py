@@ -12,4 +12,7 @@ urlpatterns = [
     path('users/', include('django.contrib.auth.urls')),
     path('courses/', include('app.courses.urls')),
     path('students/', include('app.students.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

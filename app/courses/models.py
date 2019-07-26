@@ -3,6 +3,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.template.defaultfilters import slugify
+from django.template.loader import render_to_string
 
 from app.courses.fields import OrderField
 
@@ -111,6 +112,9 @@ class ModuleContentType(models.Model):
     class Meta:
         abstract = True
 
+    def render(self):
+        return render_to_string('course/{}.html'.format(self._meta.model_name), {'item': self})
+
 
 class Text(ModuleContentType):
     content = models.TextField()
@@ -125,4 +129,4 @@ class Image(ModuleContentType):
 
 
 class Video(ModuleContentType):
-    url = models.FileField(upload_to='videos')
+    url = models.URLField(blank=True)

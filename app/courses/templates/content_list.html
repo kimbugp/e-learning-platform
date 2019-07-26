@@ -17,7 +17,10 @@ Module {{ module.order|add:1 }}: {{ module.title }}
                 {% for content in module.contents.all %}
                 <div data-id="{{ content.id }}">
                     {% with item=content.item %}
-                    <p>{{ item }}</p>
+                    <div class="">
+                        <h2>{{ item.title }}</h2>
+                        {{ item.render }}
+                    </div>
                     {% if course.owner.id == request.user.id %}
                     <a href="#">Edit</a>
                     <form action="{% url 'module_content_delete' module.id content.id %}" method="post">
