@@ -2,15 +2,41 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
+from django.template.defaultfilters import slugify
 
 from app.courses.fields import OrderField
 
 User = get_user_model()
 
 
-class Subject(models.Model):
+class BaseModel(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+    @classmethod
+    def generate_unique_slug(cls, value):
+        origin_slug = slugify(value)
+        unique_slug = origin_slug
+        numb = 1
+        while cls.objects.filter(slug=unique_slug).exists():
+            unique_slug = '%s-%d' % (origin_slug, numb)
+            numb += 1
+        return unique_slug
+
+    def save(self, *args, **kwargs):
+        self.slug = self.generate_unique_slug(self.title)
+        super().save(*args, **kwargs)
+
+
+class Subject(BaseModel):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200, unique=True)
+    slug = models.SlugField(max_length=200, unique=True,
+                            unique_for_date='created')
 
     class Meta:
         ordering = ['title']
@@ -19,7 +45,7 @@ class Subject(models.Model):
         return self.title
 
 
-class Course(models.Model):
+class Course(BaseModel):
     owner = models.ForeignKey(User,
                               related_name='courses_created',
                               on_delete=models.CASCADE)
@@ -27,9 +53,14 @@ class Course(models.Model):
                                 related_name='courses',
                                 on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200, unique=True)
-    overview = models.TextField()
-    created = models.DateTimeField(auto_now_add=True)
+    slug = models.SlugField(max_length=200, unique=True,
+                            unique_for_date='created')
+    overview = models.TextField(blank=True)
+    image = models.ImageField(
+        upload_to='images', blank=True, default='default.jpg')
+
+    students = models.ManyToManyField(
+        User, related_name='courses_joined', blank=True)
 
     class Meta:
         ordering = ['-created']
@@ -45,7 +76,6 @@ class Module(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     order = OrderField(blank=True, for_fields=['course'])
-
 
     class Meta:
         ordering = ['order']
@@ -87,12 +117,12 @@ class Text(ModuleContentType):
 
 
 class File(ModuleContentType):
-    file = models.URLField()
+    file = models.FileField(upload_to='files')
 
 
 class Image(ModuleContentType):
-    file = models.URLField()
+    file = models.ImageField(upload_to='images', default='default.jpg')
 
 
 class Video(ModuleContentType):
-    url = models.URLField()
+    url = models.FileField(upload_to='videos')

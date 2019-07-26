@@ -3,10 +3,19 @@ from django.urls import path
 from .views import content_view, modules_view, courses_views
 
 urlpatterns = [
+    # students
+    path('course/', courses_views.CourseListView.as_view(),
+         name='student_courses_list'),
+    path('course/subject/<slug:subject>)/',
+         courses_views.CourseListView.as_view(),
+         name='student_course_list_subject'),
+    path('course/<slug:slug>/',
+         courses_views.CourseDetailView.as_view(),
+         name='student_course_detail'),
 
-    # courses
+    # admin
     path('create/',
-         courses_views.CourseCreateView .as_view(),
+         courses_views.CourseCreateView.as_view(),
          name='course_create'),
     path('',
          courses_views.CoursesListView.as_view(),

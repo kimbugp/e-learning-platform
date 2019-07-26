@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Courses{% endblock %}
 
 {% block content %}
@@ -10,10 +10,13 @@
             {% for course in object_list %}
             <div class="course-info">
                 <h3>{{ course.title }}</h3>
+                <img src={{course.image.url}} alt="{{ course.title }}" height="42" width="42">
                 <p>
                     <a href="{% url 'course_edit' course.id %}">Edit</a>
                     <a href="{% url 'course_delete' course.id %}">Delete</a>
+                    {% if course.owner.id == request.user.id%}
                     <a href="{% url 'course_module_update' course.id %}">Edit Modules</a>
+                    {% endif %}
                     {% if course.modules.all %}
                     <a href="{% url 'module_content_list' course.id course.modules.first.id %}">Manage contents</a>
                     {% endif %}

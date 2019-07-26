@@ -1,8 +1,10 @@
 <div class="bg-light border-right" id="sidebar-wrapper">
     <div class="list-group list-group-flush">
         <a href="{% url 'home' %}" class="list-group-item list-group-item-action bg-light">Dashboard</a>
-        <a href="{% url 'courses_list' %}" class="list-group-item list-group-item-action bg-light">Courses</a>
-        <a href="#" class="list-group-item list-group-item-action bg-light">Videos</a>
+        {% if request.user.is_teacher%}
+        <a href="{% url 'courses_list' %}" class="list-group-item list-group-item-action bg-light">Courses Management</a>
+        {% endif %}
+        <a href="{% url 'student_courses_list' %}" class="list-group-item list-group-item-action bg-light">Courses List</a>
         <a href="#" class="list-group-item list-group-item-action bg-light">Classes</a>
     </div>
 </div>
