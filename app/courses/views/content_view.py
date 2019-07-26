@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views.generic.base import TemplateResponseMixin, TemplateView, View
 
 from app import students
+from app.courses.models import Rating
 
 from ..models import Content, Course, Module
 
@@ -49,7 +50,7 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
         return self.render_to_response({'form': form, 'object': self.obj})
 
 
-class ContentDeleteView(View):
+class ContentDeleteView(TemplateResponseMixin, View):
 
     def post(self, request, id, module_id=None, *args, **kwargs):
         content = get_object_or_404(
@@ -58,6 +59,15 @@ class ContentDeleteView(View):
         content.item.delete()
         content.delete()
         return redirect('module_content_list', pk=module.course.id, module_id=module_id)
+
+
+class RateCourseView(View):
+    def post(self, request, id, *args, **kwargs):
+        value = request.POST.get('points', 0)
+        rating = Rating(request.user.id, id, value)
+        course = get_object_or_404(Course, id=id)
+        Rating.objects.create(user=request.user, course=course, value=value)
+        return redirect('module_content_list', pk=course.id, module_id=course.module.first().id)
 
 
 class DashBoardView(TemplateView, TemplateResponseMixin):

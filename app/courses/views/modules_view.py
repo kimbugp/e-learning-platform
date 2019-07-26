@@ -1,8 +1,9 @@
+from django.db.models.aggregates import Avg
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic.base import TemplateResponseMixin, View
 
-from ..models import Course, Module
 from ..forms import ModuleFormSet
+from ..models import Course, Module
 
 
 class CourseModuleUpdateView(TemplateResponseMixin, View):
@@ -34,4 +35,5 @@ class ModuleContentListView(TemplateResponseMixin, View):
     def get(self, request, pk, module_id):
         module = get_object_or_404(Module,
                                    id=module_id, course__id=pk)
-        return self.render_to_response({'module': module})
+        rating = module.course.ratings.aggregate(rating=Avg('value'))
+        return self.render_to_response({'module': module, **rating})

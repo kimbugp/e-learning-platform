@@ -1,0 +1,8 @@
+<div>
+    <h2>Rating: {{ rating }}</h2>
+    <form action="{% url 'course_rating' course.id %}" method="post">
+        {% csrf_token %}
+        <input type=" range" name="points" min="0" max="5">
+        <input type="submit" value="Submit" />
+    </form>
+</div>

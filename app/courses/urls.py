@@ -44,5 +44,8 @@ urlpatterns = [
     path('module/<int:module_id>/content_view/<id>/',
          content_view.ContentDeleteView.as_view(),
          name='module_content_delete'),
+    path('rating/<int:id>',
+         content_view.RateCourseView.as_view(),
+         name='course_rating'),
 
 ]
