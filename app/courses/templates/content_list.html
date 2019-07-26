@@ -29,6 +29,7 @@ Module {{ module.order|add:1 }}: {{ module.title }}
                 <p>This module has no contents yet.</p>
                 {% endfor %}
             </div>
+            {% if course.owner.id == request.user.id %}
             <h3>Add new content:</h3>
             <ul class="content-types">
                 <li><a href="{% url 'module_content_create' module.id 'text' %}">
@@ -40,6 +41,7 @@ Module {{ module.order|add:1 }}: {{ module.title }}
                 <li><a href="{% url 'module_content_create' module.id 'file' %}">
                         File</a></li>
             </ul>
+            {% endif %}
         </div>
     </div>
 

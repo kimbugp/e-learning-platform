@@ -7,7 +7,9 @@
         {% empty %}
         <li>No modules yet.</li>
         {% endfor %}
+        {% if course.owner.id == request.user.id %}
         <a href="{% url 'course_module_update' course.id%}" class="list-group-item list-group-item-action bg-light">Edit
             modules</a>
+        {%endif%}
     </div>
 </div>
