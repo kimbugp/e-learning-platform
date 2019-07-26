@@ -67,7 +67,7 @@ class RateCourseView(View):
         rating = Rating(request.user.id, id, value)
         course = get_object_or_404(Course, id=id)
         Rating.objects.create(user=request.user, course=course, value=value)
-        return redirect('module_content_list', pk=course.id, module_id=course.module.first().id)
+        return redirect('module_content_list', pk=course.id, module_id=course.modules.first().id)
 
 
 class DashBoardView(TemplateView, TemplateResponseMixin):

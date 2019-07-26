@@ -10,9 +10,8 @@ Module {{ module.order|add:1 }}: {{ module.title }}
     {% include 'course_nav.html' %}
     <div>
         <h1>{{ course.title }}</h1>
-        {% if not rated %}
-            {% include 'ratings.html' %}
-        {% endif %}
+
+        {% include 'ratings.html' %}
         <div class="module">
             <h2>{{ module.order|add:1 }}: {{ module.title }}</h2>
             <h3>Content:</h3>

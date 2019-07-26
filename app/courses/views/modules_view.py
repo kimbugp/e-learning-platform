@@ -36,4 +36,7 @@ class ModuleContentListView(TemplateResponseMixin, View):
         module = get_object_or_404(Module,
                                    id=module_id, course__id=pk)
         rating = module.course.ratings.aggregate(rating=Avg('value'))
-        return self.render_to_response({'module': module, **rating})
+        rated = False
+        if module.course.ratings.all().filter(user=self.request.user.id, course=pk):
+            rated = True
+        return self.render_to_response({'module': module, 'rated': rated, **rating})
