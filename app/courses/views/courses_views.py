@@ -43,9 +43,10 @@ class CourseModelEditMixin(CourseOwnerMixin):
         })
 
 
-class CourseCreateView(CourseModelEditMixin, PermissionRequiredMixin,
-                       CreateView):
-    permission_required = 'courses.create_course'
+class CourseCreateView(
+    CourseModelEditMixin, PermissionRequiredMixin, CreateView
+):
+    permission_required = "courses.add_course"
 
 
 class CourseUpdateView(PermissionRequiredMixin, CourseModelEditMixin, UpdateView):
