@@ -1,20 +1,22 @@
 language: python
-python: 
+python:
   - "3.7"
 
 addons:
   postgresql: "9.6"
 
-install: 
+install:
   - pip install pipenv
   - pipenv install
   - pip install coveralls
+  - pip install black
 
 before_script:
   - psql -c 'create database testdb;' -U postgres
   - python manage.py migrate
 
 script:
+  - black . --exclude venv -l 79 --check
   - pytest
 
 after_success:
