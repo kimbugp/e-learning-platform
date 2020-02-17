@@ -5,19 +5,19 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('courses', '0010_auto_20190726_0754'),
-    ]
+    dependencies = [("courses", "0010_auto_20190726_0754")]
 
     operations = [
         migrations.AlterField(
-            model_name='course',
-            name='image',
-            field=models.ImageField(blank=True, default='default.jpg', upload_to='images'),
+            model_name="course",
+            name="image",
+            field=models.ImageField(
+                blank=True, default="default.jpg", upload_to="images"
+            ),
         ),
         migrations.AlterField(
-            model_name='image',
-            name='file',
-            field=models.ImageField(default='default.jpg', upload_to='images'),
+            model_name="image",
+            name="file",
+            field=models.ImageField(default="default.jpg", upload_to="images"),
         ),
     ]

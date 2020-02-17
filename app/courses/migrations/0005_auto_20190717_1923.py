@@ -6,28 +6,24 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('courses', '0004_auto_20190717_1910'),
-    ]
+    dependencies = [("courses", "0004_auto_20190717_1910")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='content',
-            options={'ordering': ['order']},
+            name="content", options={"ordering": ["order"]}
         ),
         migrations.AlterModelOptions(
-            name='module',
-            options={'ordering': ['order']},
+            name="module", options={"ordering": ["order"]}
         ),
         migrations.AddField(
-            model_name='content',
-            name='order',
+            model_name="content",
+            name="order",
             field=app.courses.fields.OrderField(blank=True, default=1),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='module',
-            name='order',
+            model_name="module",
+            name="order",
             field=app.courses.fields.OrderField(blank=True, default=1),
             preserve_default=False,
         ),

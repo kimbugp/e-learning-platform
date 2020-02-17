@@ -6,45 +6,49 @@ import django.utils.timezone
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('courses', '0009_auto_20190726_0726'),
-    ]
+    dependencies = [("courses", "0009_auto_20190726_0726")]
 
     operations = [
         migrations.AddField(
-            model_name='course',
-            name='updated',
+            model_name="course",
+            name="updated",
             field=models.DateTimeField(auto_now=True),
         ),
         migrations.AddField(
-            model_name='subject',
-            name='created',
-            field=models.DateTimeField(auto_now_add=True, default=django.utils.timezone.now),
+            model_name="subject",
+            name="created",
+            field=models.DateTimeField(
+                auto_now_add=True, default=django.utils.timezone.now
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='subject',
-            name='updated',
+            model_name="subject",
+            name="updated",
             field=models.DateTimeField(auto_now=True),
         ),
         migrations.AlterField(
-            model_name='course',
-            name='image',
-            field=models.FileField(blank=True, upload_to='images'),
+            model_name="course",
+            name="image",
+            field=models.FileField(blank=True, upload_to="images"),
         ),
         migrations.AlterField(
-            model_name='course',
-            name='overview',
+            model_name="course",
+            name="overview",
             field=models.TextField(blank=True),
         ),
         migrations.AlterField(
-            model_name='course',
-            name='slug',
-            field=models.SlugField(max_length=200, unique=True, unique_for_date='created'),
+            model_name="course",
+            name="slug",
+            field=models.SlugField(
+                max_length=200, unique=True, unique_for_date="created"
+            ),
         ),
         migrations.AlterField(
-            model_name='subject',
-            name='slug',
-            field=models.SlugField(max_length=200, unique=True, unique_for_date='created'),
+            model_name="subject",
+            name="slug",
+            field=models.SlugField(
+                max_length=200, unique=True, unique_for_date="created"
+            ),
         ),
     ]
