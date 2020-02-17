@@ -87,5 +87,5 @@ The Mirest e-learning is an online platform a learning management tools for both
     Running tests:
 
     ```
-    python manage.py tes
+    python manage.py test
     ```

@@ -5,29 +5,27 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('courses', '0003_content_file_image_text_video'),
-    ]
+    dependencies = [("courses", "0003_content_file_image_text_video")]
 
     operations = [
         migrations.AddField(
-            model_name='file',
-            name='updated',
+            model_name="file",
+            name="updated",
             field=models.DateTimeField(auto_now=True),
         ),
         migrations.AddField(
-            model_name='image',
-            name='updated',
+            model_name="image",
+            name="updated",
             field=models.DateTimeField(auto_now=True),
         ),
         migrations.AddField(
-            model_name='text',
-            name='updated',
+            model_name="text",
+            name="updated",
             field=models.DateTimeField(auto_now=True),
         ),
         migrations.AddField(
-            model_name='video',
-            name='updated',
+            model_name="video",
+            name="updated",
             field=models.DateTimeField(auto_now=True),
         ),
     ]

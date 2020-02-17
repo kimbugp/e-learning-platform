@@ -5,24 +5,22 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('courses', '0007_course_image'),
-    ]
+    dependencies = [("courses", "0007_course_image")]
 
     operations = [
         migrations.AlterField(
-            model_name='file',
-            name='file',
-            field=models.FileField(upload_to='files'),
+            model_name="file",
+            name="file",
+            field=models.FileField(upload_to="files"),
         ),
         migrations.AlterField(
-            model_name='image',
-            name='file',
-            field=models.FileField(upload_to='images'),
+            model_name="image",
+            name="file",
+            field=models.FileField(upload_to="images"),
         ),
         migrations.AlterField(
-            model_name='video',
-            name='url',
-            field=models.FileField(upload_to='videos'),
+            model_name="video",
+            name="url",
+            field=models.FileField(upload_to="videos"),
         ),
     ]
