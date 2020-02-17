@@ -27,7 +27,7 @@ class UserCreation(UserCreationForm):
         return user
 
     def add_group(self, user, group):
-        my_group = Group.objects.get(name=group)
+        my_group,_ = Group.objects.get_or_create(name=group)
         my_group.user_set.add(user)
 
 
