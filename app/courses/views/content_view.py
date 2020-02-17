@@ -1,6 +1,7 @@
 from django.apps import apps
 from django.forms.models import modelform_factory
 from django.shortcuts import get_object_or_404, redirect
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import TemplateResponseMixin, TemplateView, View
 
 from app import students
