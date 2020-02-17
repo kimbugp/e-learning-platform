@@ -141,3 +141,20 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 AUTH_USER_MODEL = "authentication.User"
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+
+# AWS content upload
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_FILE_BUFFER_SIZE = 52420000
+FILE_UPLOAD_TEMP_DIR = "/static/temp"
+AWS_S3_FILE_OVERWRITE = True
+AWS_S3_FILE_NAME_CHARSET = "utf-8"
+AWS_S3_REGION_NAME = os.environ.get("AWS_S3_LOCATION")
+AWS_S3_USE_SSL = True
+AWS_S3_MAX_MEMORY_SIZE = None
+AWS_LOCATION = "iot"
+AWS_CUSTOM_DOMAIN = os.environ.get("AWS_CUSTOM_DOMAIN")
+AWS_DEFAULT_ACL = os.environ.get("AWS_DEFAULT_ACL")
+AWS_URL_EXPIRE = os.environ.get("AWS_URL_EXPIRE")
