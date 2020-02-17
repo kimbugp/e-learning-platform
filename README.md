@@ -24,6 +24,12 @@ The Mirest e-learning is an online platform a learning management tools for both
 
 
 ## How to setup the project 
+-   Clone the  repo and cd into it:
+
+    ```
+    git clone https://github.com/kimbugp/e-learning-platform
+    ```
+
 -   Check that python 3 is installed:
 
     ```
@@ -31,60 +37,62 @@ The Mirest e-learning is an online platform a learning management tools for both
     >> Python 3.6.5
     ```
 
--   Install pipenv:
+-   Install virtualenv:
 
     ```
-    brew install pipenv
+    pip install virtualenv
     ```
 
--   Check pipenv is installed:
+-   Check virtualenv is installed:
     ```
-    pipenv --version
-    >> pipenv, version 2018.6.25
+    virtualenv --version
+    >> 16.5.0
     ```
+-   Create virtual environment:
+
+    ```
+    virtualenv venv
+    ```
+
+-   Activate virtual environment:
+
+    ```
+    source venv/bin/activate install
+    ```
+
+-   Install dev dependencies to setup development environment:
+
+    ```
+    pip install -r requirements.txt
+    ```
+
 -   Check that postgres is installed:
 
     ```
     postgres --version
     >> postgres (PostgreSQL) 10.1
     ```
--   Clone the  repo and cd into it:
 
-    ```
-    git clone https://github.com/kimbugp/e-learning-platform
-    ```
-
--   Install dependencies:
-
-    ```
-    pipenv install
-    ```
-
--   Install dev dependencies to setup development environment:
-
-    ```
-    pipenv install --dev
-    ```
 -   Make a copy of the .env.sample file and rename it to .env and update the variables accordingly:
 
--   Activate a virtual environment:
-
-    ```
-    pipenv shell
-    ```
 
 -   Apply migrations:
 
     ```
     python manage.py migrate
     ```
-*   Run the application:
+-   Load sample data:
+
+    ```
+    python manage.py loaddata app/authentication/fixtures/all.json
+    ```
+-   Run the application:
 
     ```
     python manage.py runserver
     ```
 
-    Running tests:
+- Running tests:
 
     ```
     python manage.py test
