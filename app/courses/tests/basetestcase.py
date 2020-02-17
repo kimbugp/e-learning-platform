@@ -9,9 +9,9 @@ from django.urls import reverse
 
 
 class BaseTestCase(object):
-    fixtures = ['users', 'subjects']
-    current_user = 'anonymous'
-    current_password = ''
+    fixtures = ["users", "subjects"]
+    current_user = "anonymous"
+    current_password = ""
 
     def setUp(self):
         # disable logging
@@ -24,14 +24,14 @@ class BaseTestCase(object):
 
 
 class EIPTestCase(BaseTestCase, TestCase):
-    user_success = ('simon',)
-    user_fail = ('test',)
+    user_success = ("simon",)
+    user_fail = ("test",)
 
-    def user_login(self, user='simon', password='123'):
+    def user_login(self, user="simon", password="123"):
         self.client.login(username=user, password=password)
         self.current_user = user
         self.current_password = password
 
     def user_logout(self):
         self.client.logout()
-        self.current_user = 'anonymous'
+        self.current_user = "anonymous"

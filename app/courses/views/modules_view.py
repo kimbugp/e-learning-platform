@@ -7,7 +7,7 @@ from ..models import Course, Module
 
 
 class CourseModuleUpdateView(TemplateResponseMixin, View):
-    template_name = 'modules.html'
+    template_name = "modules.html"
     course = None
 
     def get_formset(self, data=None):
@@ -19,24 +19,31 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
 
     def get(self, request, *args, **kwargs):
         formset = self.get_formset()
-        return self.render_to_response({'course': self.course, 'formset': formset})
+        return self.render_to_response(
+            {"course": self.course, "formset": formset}
+        )
 
     def post(self, request, *args, **kwargs):
         formset = self.get_formset(data=request.POST)
         if formset.is_valid():
             formset.save()
-            return redirect('courses_list')
-        return self.render_to_response({'course': self.course, 'formset': formset})
+            return redirect("courses_list")
+        return self.render_to_response(
+            {"course": self.course, "formset": formset}
+        )
 
 
 class ModuleContentListView(TemplateResponseMixin, View):
-    template_name = 'content_list.html'
+    template_name = "content_list.html"
 
     def get(self, request, pk, module_id):
-        module = get_object_or_404(Module,
-                                   id=module_id, course__id=pk)
-        rating = module.course.ratings.aggregate(rating=Avg('value'))
+        module = get_object_or_404(Module, id=module_id, course__id=pk)
+        rating = module.course.ratings.aggregate(rating=Avg("value"))
         rated = False
-        if module.course.ratings.all().filter(user=self.request.user.id, course=pk):
+        if module.course.ratings.all().filter(
+            user=self.request.user.id, course=pk
+        ):
             rated = True
-        return self.render_to_response({'module': module, 'rated': rated, **rating})
+        return self.render_to_response(
+            {"module": module, "rated": rated, **rating}
+        )

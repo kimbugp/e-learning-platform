@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('authentication', '0002_user_is_student'),
-    ]
+    dependencies = [("authentication", "0002_user_is_student")]
 
     operations = [
         migrations.AlterField(
-            model_name='user',
-            name='is_student',
-            field=models.BooleanField(default=True, verbose_name='Student'),
-        ),
+            model_name="user",
+            name="is_student",
+            field=models.BooleanField(default=True, verbose_name="Student"),
+        )
     ]

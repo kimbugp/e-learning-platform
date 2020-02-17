@@ -6,13 +6,14 @@ from django.urls import include, path
 from app.courses.views.content_view import DashBoardView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', DashBoardView.as_view(template_name='home.html'), name='home'),
-    path('users/', include(('app.authentication.urls', 'user')),),
-    path('users/', include('django.contrib.auth.urls')),
-    path('courses/', include('app.courses.urls')),
-    path('students/', include('app.students.urls')),
+    path("admin/", admin.site.urls),
+    path("", DashBoardView.as_view(template_name="home.html"), name="home"),
+    path("users/", include(("app.authentication.urls", "user"))),
+    path("users/", include("django.contrib.auth.urls")),
+    path("courses/", include("app.courses.urls")),
+    path("students/", include("app.students.urls")),
 ]
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+    )
