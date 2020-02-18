@@ -4,6 +4,7 @@ import posixpath
 import threading
 
 import boto3.session
+from botocore.client import Config
 from botocore.exceptions import ClientError
 from django.core.files.storage import Storage
 from django.utils.deconstruct import deconstructible
@@ -36,6 +37,8 @@ class S3Storage(Storage):
     custom_domain = setting("AWS_CUSTOM_DOMAIN", None)
     default_acl = setting("AWS_DEFAULT_ACL", "public-read")
     expire = setting("AWS_URL_EXPIRE", 3600)
+    signature_version = setting("AWS_S3_SIGNATURE_VERSION")
+    config = None
 
     def __init__(self, bucket=None, region_name=None, **settings):
         for name, value in settings.items():
@@ -46,8 +49,13 @@ class S3Storage(Storage):
         self._entries = {}
         self._bucket = None
         self._session = None
-        self._region_name = setting("AWS_REGION_NAME")
+        self._region_name = setting("AWS_S3_REGION_NAME")
         self._connections = threading.local()
+        if not self.config:
+            kwargs = dict(
+                signature_version=self.signature_version, region_name=self.region_name
+            )
+            self.config = Config(**kwargs)
 
     @property
     def region_name(self):
@@ -82,6 +90,7 @@ class S3Storage(Storage):
                 region_name=self.region_name,
                 use_ssl=self.use_ssl,
                 endpoint_url=self.endpoint_url,
+                config=self.config,
             )
         return self._connections.connection
 
@@ -147,13 +156,9 @@ class S3Storage(Storage):
             final_path += "/"
 
         base_path_len = len(base_path)
-        if (
-            not final_path.startswith(base_path)
-            or final_path[base_path_len] != "/"
-        ):
+        if not final_path.startswith(base_path) or final_path[base_path_len] != "/":
             raise ValueError(
-                "the joined path is located outside of the base path"
-                " component"
+                "the joined path is located outside of the base path" " component"
             )
         return final_path.lstrip("/")
 
@@ -199,9 +204,7 @@ class S3Storage(Storage):
         if self.entries:
             return name in self.entries
         try:
-            self.connection.meta.client.head_object(
-                Bucket=self.bucket_name, Key=name
-            )
+            self.connection.meta.client.head_object(Bucket=self.bucket_name, Key=name)
             return True
         except ClientError:
             return False
@@ -216,9 +219,7 @@ class S3Storage(Storage):
         directories = []
         files = []
         paginator = self.connection.meta.client.get_paginator("list_objects")
-        pages = paginator.paginate(
-            Bucket=self.bucket_name, Delimiter="/", Prefix=path
-        )
+        pages = paginator.paginate(Bucket=self.bucket_name, Delimiter="/", Prefix=path)
         for page in pages:
             for entry in page.get("CommonPrefixes", ()):
                 directories.append(posixpath.relpath(entry["Prefix"], path))
@@ -231,11 +232,7 @@ class S3Storage(Storage):
         if self.entries:
             entry = self.entries.get(name)
             if entry:
-                return (
-                    entry.size
-                    if hasattr(entry, "size")
-                    else entry.content_length
-                )
+                return entry.size if hasattr(entry, "size") else entry.content_length
             return 0
         return self.bucket.Object(self._encode_name(name)).content_length
 
@@ -261,9 +258,7 @@ class S3Storage(Storage):
     def url(self, name, parameters=None):
         name = self._normalize_name(self._clean_name(name))
         if self.custom_domain:
-            return "https://{}/{}".format(
-                self.custom_domain, filepath_to_uri(name)
-            )
+            return "https://{}/{}".format(self.custom_domain, filepath_to_uri(name))
         params = parameters.copy() if parameters else {}
         params["Bucket"] = self.bucket.name
         params["Key"] = self._encode_name(name)
